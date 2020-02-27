@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    caching.spinnaker.io/ignore: "true"
+  name: dummy
+  namespace: justin-test
+  labels:
+    app: dummy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: dummy
+  template:
+    metadata:
+      labels:
+        app: dummy
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+        prometheus.io/path: '/metrics'
+    spec:
+      containers:
+      - name: dummy
+        image: justinrlee/dummy-hello-world:labels
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
